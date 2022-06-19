@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Reminder</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pick_date">pick date</string>
+    <string name="set_reminder">set reminder</string>
+    <string name="pick_time">pick time</string>
+    <string name="view_reminders">view reminders</string>
+    <string name="shown_reminder">Shown</string>
+    <string name="reminder_not_shown">Pending</string>
+</resources>
