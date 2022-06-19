@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs'
 }
 
@@ -58,6 +59,8 @@ dependencies {
 
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     //Roomdb
     implementation("androidx.room:room-runtime:$room_version")

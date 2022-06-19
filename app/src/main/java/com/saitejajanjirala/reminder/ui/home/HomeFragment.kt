@@ -28,6 +28,7 @@ import com.saitejajanjirala.reminder.databinding.FragmentHomeBinding
 import com.saitejajanjirala.reminder.db.Reminder
 import com.saitejajanjirala.reminder.models.Status
 import com.saitejajanjirala.reminder.receivers.NotificationReceiver
+import com.saitejajanjirala.reminder.utils.Helper
 import com.saitejajanjirala.reminder.utils.Keys
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -92,9 +93,9 @@ class HomeFragment : Fragment() {
                     calendar = Calendar.getInstance()
                     dateAndTime = ""
                     viewBinding.time.text = ""
-                    viewBinding.title.setText("")
                     Toast.makeText(context, "Reminder $title is successfully set", Toast.LENGTH_LONG).show()
                     title = ""
+                    viewBinding.title.setText("")
                 }
                 Status.ERROR->{
                     viewBinding.progressBar.visibility = View.GONE
@@ -175,7 +176,7 @@ class HomeFragment : Fragment() {
         val reminder = Reminder(
             id = System.currentTimeMillis(),
             name = title,
-            time = calendar,
+            time = time,
             shown = false
         )
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,time,getPendingIntent(reminder))
@@ -184,8 +185,12 @@ class HomeFragment : Fragment() {
 
     private fun getPendingIntent(reminder: Reminder): PendingIntent{
         val intent = Intent(context,NotificationReceiver::class.java)
-        intent.putExtra(Keys.REMINDER_EXTRA,reminder)
-        return PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_IMMUTABLE)
+        intent.putExtra(Keys.REMINDER_EXTRA,Helper.reminderToString(reminder))
+        var flag = PendingIntent.FLAG_UPDATE_CURRENT
+        if(isGreaterThanTwelve()){
+            flag = PendingIntent.FLAG_IMMUTABLE
+        }
+        return PendingIntent.getBroadcast(context,0,intent,flag)
     }
 
     private fun onClickPickUpDate() {

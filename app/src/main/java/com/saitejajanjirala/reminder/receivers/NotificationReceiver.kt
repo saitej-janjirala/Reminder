@@ -18,14 +18,15 @@ import com.saitejajanjirala.reminder.db.Reminder
 import com.saitejajanjirala.reminder.services.NotificationService
 import com.saitejajanjirala.reminder.ui.MainActivity
 import com.saitejajanjirala.reminder.utils.Keys
+import java.security.spec.KeySpec
 import kotlin.random.Random
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
         if( p1 != null ) {
-            Log.i("broadcast received","true")
+            val str = p1.getStringExtra(Keys.REMINDER_EXTRA)
             val intent = Intent(p0!!,NotificationService::class.java)
-            intent.putExtras(p1)
+            intent.putExtra(Keys.REMINDER_EXTRA,str)
             p0.startService(intent)
         }
     }

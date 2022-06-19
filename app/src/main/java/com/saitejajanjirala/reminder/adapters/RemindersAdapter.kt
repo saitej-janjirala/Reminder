@@ -30,8 +30,7 @@ class RemindersAdapter (private val  context: Context,private val remindersList 
 
         private fun getTimeInSimpleDateFormat(reminder: Reminder): String? {
             val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            sdf.calendar = reminder.time
-            return sdf.format(reminder.time.timeInMillis)
+            return sdf.format(reminder.time)
         }
 
     }

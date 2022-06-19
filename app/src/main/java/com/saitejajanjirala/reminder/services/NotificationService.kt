@@ -11,6 +11,7 @@ import com.saitejajanjirala.reminder.R
 import com.saitejajanjirala.reminder.db.DatabaseService
 import com.saitejajanjirala.reminder.db.Reminder
 import com.saitejajanjirala.reminder.ui.MainActivity
+import com.saitejajanjirala.reminder.utils.Helper
 import com.saitejajanjirala.reminder.utils.Keys
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -23,14 +24,15 @@ class NotificationService : IntentService("notification service") {
         scheduleNotification(p0!!)
     }
     private fun scheduleNotification(intent: Intent) {
-        val reminder = intent.getSerializableExtra(Keys.REMINDER_EXTRA) as Reminder
+        val remStr = intent.getStringExtra(Keys.REMINDER_EXTRA)
+        val reminder = Helper.stringToReminder(remStr!!)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(this,0,
                 Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
         } else {
             PendingIntent.getActivity(this,0,
-                Intent(this, MainActivity::class.java), PendingIntent.FLAG_ONE_SHOT)
+                Intent(this, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
@@ -78,8 +80,7 @@ class NotificationService : IntentService("notification service") {
 
     private fun getTimeInSimpleDateFormat(reminder: Reminder): String? {
         val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        sdf.calendar = reminder.time
-        return sdf.format(reminder.time.timeInMillis)
+        return sdf.format(reminder.time)
     }
 
 
